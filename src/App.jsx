@@ -1,13 +1,27 @@
-import { React, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { getAllNotes, addNote, deleteNote, archiveNote, unarchiveNote } from './utils/local-data';
 import HomePage from './pages/HomePage';
 import DetailPage from './pages/DetailPage';
 import AddPage from './pages/AddPage';
 import ArchivePage from './pages/ArchivePage';
+import NoteFoundPage from './pages/NotFoundPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
-  const [notes, setNotes] = useState(getAllNotes());
+  const [notes, setNotes] = useState(() => {
+    const savedNotes = localStorage.getItem('notes');
+    if (savedNotes) {
+      return JSON.parse(savedNotes);
+    } else {
+      return getAllNotes();
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('notes', JSON.stringify(notes));
+  }, [notes]);
+
   const onDeleteHandler = (id) => {
     const updatedNotes = notes.filter((note) => note.id !== id);
     setNotes(updatedNotes);
@@ -47,6 +61,7 @@ function App() {
           <Route path='/notes/:id' element={<DetailPage notes={notes} onDelete={onDeleteHandler} onArchive={onArchiveHandler} />} />
           <Route path='/notes/new' element={<AddPage onAdd={onAddNoteHandler} />} />
           <Route path='/archives' element={<ArchivePage notes={notes} />} />
+          <Route path='*' element={<NotFoundPage />} />
         </Routes>
       </main>
     </div>

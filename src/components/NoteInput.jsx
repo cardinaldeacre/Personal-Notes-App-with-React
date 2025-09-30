@@ -8,8 +8,8 @@ function NoteInput({ addNote }) {
         setTitle(e.target.value);
     };
 
-    const onBodyInputEventHandler = (e) => {
-        setBody(e.target.innerHTML);
+    const onBodyChangeEventHandler = (e) => {
+        setBody(e.target.value);
     };
 
     const onSubmitEventHandler = (e) => {
@@ -25,11 +25,11 @@ function NoteInput({ addNote }) {
                 value={title}
                 onChange={onTitleChangeEventHandler}
             />
-            <div
+            <textarea
                 className="add-new-page__input__body"
                 data-placeholder="Isi catatan.."
-                contentEditable
-                onInput={onBodyInputEventHandler}
+                value={body}
+                onInput={onBodyChangeEventHandler}
             />
             <button type="submit">Buat</button>
         </form>

@@ -1,16 +1,19 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import NoteList from "../components/NoteList";
 
 function HomePage({ notes }) {
-    const [searchKeyword, setSearchKeyboard] = useState('');
+    const [searchParams, setSearchParams] = useSearchParams();
+    const keyword = searchParams.get('keyword') || '';
+
     const onSearchChangeHandler = (e) => {
-        setSearchKeyboard(e.target.value);
+        const newKeyword = e.target.value;
+        setSearchParams({ keyword: newKeyword });
     }
 
     const filteredNotes = notes.filter((note) => {
         const isNotArchived = !note.archived;
-        const titleMatch = note.title.toLowerCase().includes(searchKeyword.toLowerCase());
+        const titleMatch = note.title.toLowerCase().includes(keyword.toLowerCase());
         return isNotArchived && titleMatch;
     })
 
@@ -23,7 +26,7 @@ function HomePage({ notes }) {
                 <input
                     type="text"
                     placeholder="Cari berdasarkan judul.."
-                    value={searchKeyword}
+                    value={keyword}
                     onChange={onSearchChangeHandler}
                 />
             </div>

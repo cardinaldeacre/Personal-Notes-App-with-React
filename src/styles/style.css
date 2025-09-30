@@ -265,11 +265,11 @@ a {
 	margin-top: 16px;
 	outline: none;
 	line-height: 1.6;
+	color: #aaa;
 }
 
 .add-new-page__input__body:empty::before {
 	content: attr(data-placeholder);
-	color: #aaa;
 	font-style: italic;
 }
 
